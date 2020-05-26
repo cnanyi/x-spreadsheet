@@ -685,7 +685,7 @@ function sheetInitEvents() {
 
   bind(window, 'paste', (evt) => {
     paste.call(this, 'all', evt);
-    evt.preventDefault();
+    // evt.preventDefault();
   });
 
   // for selector
