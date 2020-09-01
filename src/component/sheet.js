@@ -370,6 +370,7 @@ function overlayerMousedown(evt) {
   if (autoFilter.includes(ri, ci)) {
     if (left + width - 20 < offsetX && top + height - 20 < offsetY) {
       const items = autoFilter.items(ci, (r, c) => data.rows.getCell(r, c));
+      sortFilter.hide();
       sortFilter.set(ci, items, autoFilter.getFilter(ci), autoFilter.getSort(ci));
       sortFilter.setOffset({ left, top: top + height + 2 });
       return;
@@ -477,15 +478,17 @@ function dataSetCellText(text, state = 'finished') {
   // const [ri, ci] = selector.indexes;
   if (data.settings.mode === 'read') return;
   data.setSelectedCellText(text, state);
+  const { ri, ci } = data.selector;
   if (state === 'finished') {
-    const { ri, ci } = data.selector;
-    this.trigger('cell-edited', text, ri, ci);
     table.render();
+  } else {
+    this.trigger('cell-edited', text, ri, ci);
   }
 }
 
 function insertDeleteRowColumn(type) {
   const { data } = this;
+  if (data.settings.mode === 'read') return;
   if (type === 'insert-row') {
     data.insert('row');
   } else if (type === 'delete-row') {
